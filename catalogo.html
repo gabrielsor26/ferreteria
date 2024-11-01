@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catálogo - Ferretería Amigable</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Fuente personalizada Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .text-dark {
+            color: #070707;
+        }
+
+        .bg-primary {
+            background-color: #b22222;
+        }
+
+        .text-light {
+            color: #ffffff;
+        }
+
+        .bg-lightGray {
+            background-color: #EAEAEA;
+        }
+
+        .text-gray {
+            color: #8D8D8D;
+        }
+
+        /* Tamaño fijo para imágenes */
+        .product-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-dark">
+
+    <!-- Navegación -->
+    <header class="bg-primary text-light p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Ferretería</h1>
+            <nav class="flex space-x-6">
+                <a href="index.html" class="hover:text-gray transition">Inicio</a>
+                <a href="catalogo.html" class="hover:text-gray transition">Catálogo</a>
+                <a href="contacto.html" class="hover:text-gray transition">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Filtros y Productos -->
+    <main class="container mx-auto py-10 px-4">
+        <section class="text-center mb-10">
+            <h2 class="text-3xl font-semibold mb-4">Explora Nuestro Catálogo</h2>
+            <p class="text-gray mb-8">Encuentra las herramientas y materiales perfectos para tus proyectos.</p>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button
+                    class="bg-primary text-white py-2 px-6 rounded-full hover:bg-gray-800 transition">Herramientas</button>
+                <button
+                    class="bg-primary text-white py-2 px-6 rounded-full hover:bg-gray-800 transition">Materiales</button>
+                <button
+                    class="bg-primary text-white py-2 px-6 rounded-full hover:bg-gray-800 transition">Pinturas</button>
+                <button
+                    class="bg-primary text-white py-2 px-6 rounded-full hover:bg-gray-800 transition">Electricidad</button>
+                <button
+                    class="bg-primary text-white py-2 px-6 rounded-full hover:bg-gray-800 transition">Plomería</button>
+            </div>
+        </section>
+
+        <!-- Productos -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <!-- Producto 1 -->
+            <div class="bg-lightGray p-6 rounded-lg shadow-md transform transition hover:scale-105 hover:shadow-lg">
+                <div class="flex items-center justify-center h-36 mb-4">
+                    <img src="img/martillo.jpg" alt="Martillo" class="product-image rounded-md">
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Martillo</h3>
+                <p class="text-gray mb-4">S/ 45.00</p>
+                <button class="bg-primary text-white py-2 px-4 w-full rounded-full hover:bg-gray-800 transition">Añadir
+                    a Cotización</button>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="bg-lightGray p-6 rounded-lg shadow-md transform transition hover:scale-105 hover:shadow-lg">
+                <div class="flex items-center justify-center h-36 mb-4">
+                    <img src="img/taladro.jpg" alt="Taladro Inalámbrico" class="product-image rounded-md">
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Taladro Inalámbrico</h3>
+                <p class="text-gray mb-4">S/ 1,200.00</p>
+                <button class="bg-primary text-white py-2 px-4 w-full rounded-full hover:bg-gray-800 transition">Añadir
+                    a Cotización</button>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="bg-lightGray p-6 rounded-lg shadow-md transform transition hover:scale-105 hover:shadow-lg">
+                <div class="flex items-center justify-center h-36 mb-4">
+                    <img src="img/serrucho.jpg" alt="Serrucho" class="product-image rounded-md">
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Serrucho</h3>
+                <p class="text-gray mb-4">S/ 70.00</p>
+                <button class="bg-primary text-white py-2 px-4 w-full rounded-full hover:bg-gray-800 transition">Añadir
+                    a Cotización</button>
+            </div>
+
+            <!-- Producto 4 -->
+            <div class="bg-lightGray p-6 rounded-lg shadow-md transform transition hover:scale-105 hover:shadow-lg">
+                <div class="flex items-center justify-center h-36 mb-4">
+                    <img src="img/llave.jpg" alt="Llave Ajustable" class="product-image rounded-md">
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Llave Ajustable</h3>
+                <p class="text-gray mb-4">S/ 30.00</p>
+                <button class="bg-primary text-white py-2 px-4 w-full rounded-full hover:bg-gray-800 transition">Añadir
+                    a Cotización</button>
+            </div>
+
+            <!-- Producto 5 -->
+            <div class="bg-lightGray p-6 rounded-lg shadow-md transform transition hover:scale-105 hover:shadow-lg">
+                <div class="flex items-center justify-center h-36 mb-4">
+                    <img src="img/destornillador.jpg" alt="Destornillador" class="product-image rounded-md">
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Destornillador</h3>
+                <p class="text-gray mb-4">S/ 15.00</p>
+                <button class="bg-primary text-white py-2 px-4 w-full rounded-full hover:bg-gray-800 transition">Añadir
+                    a Cotización</button>
+            </div>
+
+            <!-- Producto 6 -->
+            <div class="bg-lightGray p-6 rounded-lg shadow-md transform transition hover:scale-105 hover:shadow-lg">
+                <div class="flex items-center justify-center h-36 mb-4">
+                    <img src="img/alicates.jpg" alt="Alicates" class="product-image rounded-md">
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Alicates</h3>
+                <p class="text-gray mb-4">S/ 25.00</p>
+                <button class="bg-primary text-white py-2 px-4 w-full rounded-full hover:bg-gray-800 transition">Añadir
+                    a Cotización</button>
+            </div>
+
+            <!-- Producto 7 -->
+            <div class="bg-lightGray p-6 rounded-lg shadow-md transform transition hover:scale-105 hover:shadow-lg">
+                <div class="flex items-center justify-center h-36 mb-4">
+                    <img src="img/clavos.jpg" alt="Caja de Clavos" class="product-image rounded-md">
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Caja de Clavos</h3>
+                <p class="text-gray mb-4">S/ 12.00</p>
+                <button class="bg-primary text-white py-2 px-4 w-full rounded-full hover:bg-gray-800 transition">Añadir
+                    a Cotización</button>
+            </div>
+
+            <!-- Producto 8 -->
+            <div class="bg-lightGray p-6 rounded-lg shadow-md transform transition hover:scale-105 hover:shadow-lg">
+                <div class="flex items-center justify-center h-36 mb-4">
+                    <img src="img/tornillos.jpg" alt="Caja de Tornillos" class="product-image rounded-md">
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Caja de Tornillos</h3>
+                <p class="text-gray mb-4">S/ 18.00</p>
+                <button class="bg-primary text-white py-2 px-4 w-full rounded-full hover:bg-gray-800 transition">Añadir
+                    a Cotización</button>
+            </div>
+
+            <!-- Producto 9 -->
+            <div class="bg-lightGray p-6 rounded-lg shadow-md transform transition hover:scale-105 hover:shadow-lg">
+                <div class="flex items-center justify-center h-36 mb-4">
+                    <img src="img/escalera.jpg" alt="Escalera de Aluminio" class="product-image rounded-md">
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Escalera de Aluminio</h3>
+                <p class="text-gray mb-4">S/ 220.00</p>
+                <button class="bg-primary text-white py-2 px-4 w-full rounded-full hover:bg-gray-800 transition">Añadir
+                    a Cotización</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="bg-lightGray text-center text-sm text-gray-600 py-6">
+        <p>© 2023 Ferretería Amigable - Todos los derechos reservados.</p>
+    </footer>
+</body>
+
+</html>

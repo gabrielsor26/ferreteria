@@ -13,22 +13,10 @@
             font-family: 'Nunito', sans-serif;
             background-color: #f5f5f5;
         }
-
-        .bg-primary {
-            background-color: #b22222;
-        }
-
-        .text-light {
-            color: #ffffff;
-        }
-
-        .bg-lightGray {
-            background-color: #EAEAEA;
-        }
-
-        .text-gray {
-            color: #8D8D8D;
-        }
+        .bg-primary { background-color: #b22222; }
+        .text-light { color: #ffffff; }
+        .bg-lightGray { background-color: #EAEAEA; }
+        .text-gray { color: #8D8D8D; }
     </style>
 </head>
 
@@ -74,8 +62,7 @@
 
                     <div class="flex space-x-4">
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Guardar</button>
-                        <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg"
-                            onclick="cancelarEdicion()">Cancelar</button>
+                        <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg" onclick="cancelarEdicion()">Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -102,7 +89,7 @@
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxRAxyY9A4F8Ttu7xqA-MJmCII6r5lpEpJF0fNkOPZEwUpzf1_463B8bDr2DHUBmTfh/exec"; // Reemplaza con el ID del despliegue de tu Apps Script
+        const API_URL = "https://script.google.com/macros/s/AKfycbyFqWY_U3zXiBOCjil1VYgzpmaldLeHMSk0Iq4550BSE91-LWvSjYP4UoAErDDS0sUi/exec"; // Cambia YOUR_SCRIPT_ID por el ID de despliegue de tu Apps Script
 
         document.getElementById("productoForm").addEventListener("submit", async function (e) {
             e.preventDefault();
@@ -120,9 +107,11 @@
             formData.append("precio", precio);
             formData.append("stock", stock);
 
+            // Convertir la imagen a Base64 si está seleccionada
             if (fileInput.files.length > 0) {
                 const file = fileInput.files[0];
-                formData.append("image", file);
+                const base64 = await convertFileToBase64(file);
+                formData.append("image", base64);
                 formData.append("fileName", file.name);
                 formData.append("mimeType", file.type);
             }
@@ -130,9 +119,8 @@
             try {
                 const response = await fetch(API_URL, { method: "POST", body: formData });
                 const result = await response.json();
-
                 if (result.status === "success") {
-                    obtenerProductos(); // Recarga la lista de productos
+                    obtenerProductos(); // Recargar productos después de crear o actualizar
                     cancelarEdicion();
                 } else {
                     console.error("Error en la respuesta:", result.message);
@@ -140,21 +128,31 @@
                 }
             } catch (error) {
                 console.error("Error en la solicitud:", error);
-                alert("Hubo un error en la solicitud. Revisa la consola para más detalles.");
+                alert("Hubo un error en la solicitud.");
             }
         });
+
+        // Convertir archivo a Base64
+        function convertFileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(",")[1]); // Remueve el encabezado de Base64
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
 
         async function obtenerProductos() {
             try {
                 const response = await fetch(`${API_URL}?action=read`);
-                if (!response.ok) throw new Error("Error en la solicitud de productos");
+                if (!response.ok) throw new Error("Error al cargar productos");
                 const productos = await response.json();
 
                 if (productos && Array.isArray(productos)) {
                     mostrarProductos(productos);
                 } else {
                     console.error("Respuesta inesperada al obtener productos:", productos);
-                    alert("Hubo un error al procesar los productos.");
+                    alert("No se pudieron cargar los productos.");
                 }
             } catch (error) {
                 console.error("Error al obtener productos:", error);
@@ -172,7 +170,7 @@
                     <td class="border-b py-2 px-4">S/ ${producto.Precio}</td>
                     <td class="border-b py-2 px-4">${producto.Stock}</td>
                     <td class="border-b py-2 px-4">
-                        ${producto['URL de Imagen'] ? `<img src="${producto['URL de Imagen']}" class="w-20 h-20 object-cover rounded" alt="${producto.Producto}" />` : ""}
+                        ${producto['URL de Imagen'] ? `<img src="${producto['URL de Imagen']}" class="w-20 h-20 object-cover rounded" alt="${producto.Producto}" />` : "<span>No image</span>"}
                     </td>
                     <td class="border-b py-2 px-4">
                         <button class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition" onclick="editarProducto('${producto.ID}', '${producto.Producto}', ${producto.Precio}, ${producto.Stock}, '${producto['URL de Imagen']}')">Editar</button>

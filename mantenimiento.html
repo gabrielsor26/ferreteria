@@ -7,7 +7,6 @@
     <title>Ferretería Amigable - Mantenimiento de Productos</title>
     <!-- Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Fuente personalizada Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -19,7 +18,6 @@
             background-color: #b22222;
         }
 
-        /* Rojo oscuro amigable */
         .text-light {
             color: #ffffff;
         }
@@ -35,7 +33,6 @@
 </head>
 
 <body class="bg-white text-gray-800">
-    <!-- Navegación -->
     <header class="bg-primary text-light p-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">Ferretería Amigable</h1>
@@ -48,7 +45,6 @@
         </div>
     </header>
 
-    <!-- Contenido Principal -->
     <main class="container mx-auto py-10 px-4">
         <section class="bg-white p-6 rounded-lg shadow-lg">
             <h2 class="text-3xl font-bold mb-6 text-center">Mantenimiento de Productos</h2>
@@ -61,33 +57,25 @@
 
                     <div>
                         <label for="producto" class="block text-sm font-semibold">Producto</label>
-                        <input type="text" id="producto"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                            required />
+                        <input type="text" id="producto" class="w-full px-3 py-2 border rounded-lg" required />
                     </div>
                     <div>
                         <label for="precio" class="block text-sm font-semibold">Precio (S/)</label>
-                        <input type="number" id="precio"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                            required />
+                        <input type="number" id="precio" class="w-full px-3 py-2 border rounded-lg" required />
                     </div>
                     <div>
                         <label for="stock" class="block text-sm font-semibold">Stock</label>
-                        <input type="number" id="stock"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                            required />
+                        <input type="number" id="stock" class="w-full px-3 py-2 border rounded-lg" required />
+                    </div>
+                    <div>
+                        <label for="imagen" class="block text-sm font-semibold">Imagen del Producto</label>
+                        <input type="file" id="imagen" accept="image/*" class="w-full px-3 py-2 border rounded-lg" />
                     </div>
 
                     <div class="flex space-x-4">
-                        <button type="submit"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
-                            Guardar
-                        </button>
-                        <button type="button"
-                            class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
-                            onclick="cancelarEdicion()">
-                            Cancelar
-                        </button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Guardar</button>
+                        <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                            onclick="cancelarEdicion()">Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -101,35 +89,76 @@
                             <th class="border-b py-2 px-4">Producto</th>
                             <th class="border-b py-2 px-4">Precio (S/)</th>
                             <th class="border-b py-2 px-4">Stock</th>
+                            <th class="border-b py-2 px-4">Imagen</th>
                             <th class="border-b py-2 px-4">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="productos-list">
-                        <!-- Los productos se cargarán aquí dinámicamente -->
+                        <!-- Productos cargados dinámicamente -->
                     </tbody>
                 </table>
             </div>
         </section>
     </main>
 
-    <!-- Pie de Página -->
-    <footer class="bg-lightGray text-center text-sm text-gray-600 py-6 mt-10">
-        <p>© 2023 Ferretería Amigable - Todos los derechos reservados.</p>
-    </footer>
-
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbyzvA8-SIPNgrkmFSPGIRIYtG8GYyxnfznXpkikJ7arFULy-JlIUvEd1HxL3HcPzms/exec"; // Cambia YOUR_SCRIPT_ID por el ID del deployment
+        const API_URL = "https://script.google.com/macros/s/AKfycbxRAxyY9A4F8Ttu7xqA-MJmCII6r5lpEpJF0fNkOPZEwUpzf1_463B8bDr2DHUBmTfh/exec"; // Reemplaza con el ID del despliegue de tu Apps Script
 
-        // Obtener productos al cargar la página
-        document.addEventListener("DOMContentLoaded", obtenerProductos);
+        document.getElementById("productoForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const id = document.getElementById("productId").value;
+            const producto = document.getElementById("producto").value;
+            const precio = document.getElementById("precio").value;
+            const stock = document.getElementById("stock").value;
+            const fileInput = document.getElementById("imagen");
+
+            const formData = new FormData();
+            formData.append("action", id ? "update" : "create");
+            formData.append("id", id);
+            formData.append("producto", producto);
+            formData.append("precio", precio);
+            formData.append("stock", stock);
+
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                formData.append("image", file);
+                formData.append("fileName", file.name);
+                formData.append("mimeType", file.type);
+            }
+
+            try {
+                const response = await fetch(API_URL, { method: "POST", body: formData });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    obtenerProductos(); // Recarga la lista de productos
+                    cancelarEdicion();
+                } else {
+                    console.error("Error en la respuesta:", result.message);
+                    alert("Error al procesar la solicitud: " + result.message);
+                }
+            } catch (error) {
+                console.error("Error en la solicitud:", error);
+                alert("Hubo un error en la solicitud. Revisa la consola para más detalles.");
+            }
+        });
 
         async function obtenerProductos() {
             try {
                 const response = await fetch(`${API_URL}?action=read`);
+                if (!response.ok) throw new Error("Error en la solicitud de productos");
                 const productos = await response.json();
-                mostrarProductos(productos);
+
+                if (productos && Array.isArray(productos)) {
+                    mostrarProductos(productos);
+                } else {
+                    console.error("Respuesta inesperada al obtener productos:", productos);
+                    alert("Hubo un error al procesar los productos.");
+                }
             } catch (error) {
                 console.error("Error al obtener productos:", error);
+                alert("Hubo un error al cargar los productos.");
             }
         }
 
@@ -139,49 +168,22 @@
             productos.forEach(producto => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-          <td class="border-b py-2 px-4">${producto.Producto}</td>
-          <td class="border-b py-2 px-4">S/ ${producto.Precio}</td>
-          <td class="border-b py-2 px-4">${producto.Stock}</td>
-          <td class="border-b py-2 px-4">
-            <button class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition" onclick="editarProducto('${producto.ID}', '${producto.Producto}', ${producto.Precio}, ${producto.Stock})">Editar</button>
-            <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition" onclick="eliminarProducto('${producto.ID}')">Eliminar</button>
-          </td>
-        `;
+                    <td class="border-b py-2 px-4">${producto.Producto}</td>
+                    <td class="border-b py-2 px-4">S/ ${producto.Precio}</td>
+                    <td class="border-b py-2 px-4">${producto.Stock}</td>
+                    <td class="border-b py-2 px-4">
+                        ${producto['URL de Imagen'] ? `<img src="${producto['URL de Imagen']}" class="w-20 h-20 object-cover rounded" alt="${producto.Producto}" />` : ""}
+                    </td>
+                    <td class="border-b py-2 px-4">
+                        <button class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition" onclick="editarProducto('${producto.ID}', '${producto.Producto}', ${producto.Precio}, ${producto.Stock}, '${producto['URL de Imagen']}')">Editar</button>
+                        <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition" onclick="eliminarProducto('${producto.ID}')">Eliminar</button>
+                    </td>
+                `;
                 lista.appendChild(row);
             });
         }
 
-        document.getElementById("productoForm").addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const id = document.getElementById("productId").value;
-            const producto = document.getElementById("producto").value;
-            const precio = document.getElementById("precio").value;
-            const stock = document.getElementById("stock").value;
-
-            const action = id ? "update" : "create";
-            const url = `${API_URL}?action=${action}&id=${id}&producto=${producto}&precio=${precio}&stock=${stock}`;
-
-            try {
-                await fetch(url, { method: "POST" });
-                obtenerProductos();
-                cancelarEdicion();
-            } catch (error) {
-                console.error(`Error al ${action === "create" ? "crear" : "actualizar"} el producto:`, error);
-            }
-        });
-
-        async function eliminarProducto(id) {
-            if (!confirm("¿Estás seguro de que deseas eliminar este producto?")) return;
-            const url = `${API_URL}?action=delete&id=${id}`;
-            try {
-                await fetch(url, { method: "POST" });
-                obtenerProductos();
-            } catch (error) {
-                console.error("Error al eliminar producto:", error);
-            }
-        }
-
-        function editarProducto(id, producto, precio, stock) {
+        function editarProducto(id, producto, precio, stock, imageUrl) {
             document.getElementById("form-title").textContent = "Editar Producto";
             document.getElementById("productId").value = id;
             document.getElementById("producto").value = producto;
@@ -194,6 +196,26 @@
             document.getElementById("productId").value = "";
             document.getElementById("productoForm").reset();
         }
+
+        async function eliminarProducto(id) {
+            if (!confirm("¿Estás seguro de que deseas eliminar este producto?")) return;
+
+            try {
+                const response = await fetch(`${API_URL}?action=delete&id=${id}`, { method: "POST" });
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    obtenerProductos();
+                } else {
+                    alert("Error al eliminar el producto: " + result.message);
+                }
+            } catch (error) {
+                console.error("Error al eliminar producto:", error);
+                alert("Hubo un error al eliminar el producto.");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", obtenerProductos);
     </script>
 </body>
 
